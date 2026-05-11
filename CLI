@@ -1,0 +1,216 @@
+import os
+from datetime import datetime
+import webbrowser
+
+
+
+
+def current_path():
+	return os.path.abspath(__file__)
+def show_help():
+	return(f"""
+commands:
+	
+	- basics -
+- exit - end the commands UI
+- help -  Show All Commands
+-clear- To clear The screan
+
+	-  Files -
+	
+- cfile (ext) (name) (text) - to create file
+- rename file1 file2 - to rename file
+- dfile (file)  - to delete file
+-exists (file name) - The file is exists or not
+
+
+	- Files path
+	 -
+- path  -  to know the path of current file
+
+	-writing on output -
+	
+- write (text)  - to print the text on the screen
+
+	-time&calendar
+	
+-time- tell the time
+-calendar- tell the calendar
+
+-Commands Commands -
+
+-history- to know All commands that user wrote it 
+
+-web join -
+-google (search query)-
+
+
+
+""")
+def create_files(inputa,type):
+		#cfile py abdo hello
+		try:
+			sp = inputa.split()
+			if len(sp) >= 3:
+				with open(f"{sp[2]}.{type}" ,"w") as f:
+					text = " ".join(sp[3:])
+					f.write(text)
+				file_path= os.path.abspath(f"{sp[2]}.{type}")
+		
+				print(f"Succesed")
+				print(f"Saved in {file_path}")
+			else:
+				print(f"Invalid arguments")
+		except Exception as E:
+			print(E)
+history = []
+
+
+def show_history():
+		a = 1
+		for i in history:
+			print(f"{a}.{i}")
+			a = a+1
+
+
+def clear_screen():
+		os.system("cls" if os.name == "nt" else "clear")
+		
+	
+
+def open_google(query_parts):
+	query = " ".join(query_parts)
+	if query_parts:
+		webbrowser.open(f"https://www.google.com/search?q={query}")
+	else:
+		print(f"Please enter search query")
+		
+		
+		
+def rename_file(commanda,file1,file2):
+	if len(commanda.split()) >= 3:
+
+		if os.path.exists(file1):
+			os.rename(file1,file2)
+			print(f"Succesed renamed {file1} to {file2}")
+		else:
+			print(f"There is no file called {file1}")
+	else:
+		print(f"Invalid Arguments")
+		
+		
+def deleting_file(ino):
+		if len(ino.split()) >= 2:
+			if os.path.exists(ino.split()[1]):
+				os.remove(ino.split()[1])
+				print(f"Removed {ino.split()[1]}")
+			else:
+				print(f"There is no file called {ino.split()[1]}")
+		else:
+			print(f"invalid Arguments")
+		
+		
+		
+		
+		
+def exists(out):
+		out_s = out.split()
+		file = out_s[1]
+		if os.path.exists(file):
+			print(True)
+			print(f"{os.path.abspath(file)}")
+		else:
+			print(False)
+		
+		
+		
+
+
+	
+	
+	
+	
+
+
+
+
+	
+	
+while True:
+	a = input(">>>>")
+	
+
+	command = a.lower()
+	
+	if command == "help":
+		print(show_help())
+		
+		
+	elif command.startswith("cfile"):
+		create_files(command,command.split()[1])
+		
+		
+	elif command == "path":
+		print(current_path())
+		
+		
+	elif command.startswith("write "):
+		k = " ".join(a.split()[1:])
+		print(k)
+		
+		
+	elif command == "exit":
+		break
+		
+		
+	elif command == "time":
+		print(datetime.now())
+		
+	
+	elif command == "calendar":
+		now = datetime.now()
+		print(f"{now.year}-{now.month}-{now.day}")
+		
+		
+	elif command == "clear":
+		clear_screen()
+		
+	
+	elif command == "history":
+		show_history()
+		
+		
+	elif command.startswith("google"):
+		open_google(a.split()[1:])
+		
+		
+		
+	elif command.startswith("rename"):
+		rename_file(a,a.split()[1],a.split()[2])
+		
+		
+		
+	elif command.startswith("dfile"):
+		deleting_file(a)
+	elif command.startswith("exists"):
+		exists(a)
+		
+		
+	
+	
+		
+	
+
+		
+		
+
+		
+		
+		
+	else:
+			print(f"NotFoundCommand ({command})")
+			
+			
+	history.append(a)			
+			
+		
